@@ -57,7 +57,8 @@ spawn() {
 }
 
 setup_boot() {
-    kernel_version=$(pacman -r "$os_dir" -Q linux | cut -d' ' -f 2)-ARCH
+    kv=$(pacman -r "$os_dir" -Q linux | cut -d' ' -f 2)-ARCH
+    kernel_version=$(echo $kv | sed 's/\([[:digit:]]\).arch/\1-arch/')
 
     spawn mkinitcpio -c /etc/ostree-mkinitcpio.conf -g /boot/initramfs-linux.img \
             -k $kernel_version -S autodetect
